@@ -4,7 +4,7 @@ import com.user.demo.entites.Address;
 import com.user.demo.entites.User;
 import com.user.demo.entites.UserAddress;
 import com.user.demo.entites.UserAddressId;
-import com.user.demo.kafka.KafkaAddressInfoResponder;
+import com.user.demo.kafka.KafkaUserInfoResponder;
 import com.user.demo.mappers.UserMapper;
 import com.user.demo.model.dto.UserResponseDto;
 import com.user.demo.repositories.AddressRepository;
@@ -38,7 +38,7 @@ public class UserService {
     private final RestTemplate restTemplate;
     private final UserMapper userMapper = UserMapper.INSTANCE;
 
-    private final KafkaAddressInfoResponder kafkaAddressInfoResponder;
+    private final KafkaUserInfoResponder kafkaUserInfoResponder;
 
     public List<User> getAllUsers() {
         return userRepository.findAllWithAddressesAndDetails();
@@ -66,7 +66,7 @@ public class UserService {
     public UserResponseDto getAddressUsingKafka(Long userId) {
         UserResponseDto user;
         try {
-            user = kafkaAddressInfoResponder.getAddressInfoyUserId(userId,UserResponseDto.class);
+            user = kafkaUserInfoResponder.getInfoByUserId(userId,UserResponseDto.class);
             System.out.println(user);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();

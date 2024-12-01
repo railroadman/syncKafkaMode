@@ -41,7 +41,13 @@ public class UserController {
     @Operation(summary = "Get user by ID usinng Rest")
     @GetMapping("/kafka/{id}")
     public UserResponseDto getKafkaUserById(@PathVariable Long id) {
-        return userService.getAddressUsingKafka(id);
+        long startTime = System.currentTimeMillis();
+        var result = userService.getAddressUsingKafka(id);
+        long endTime = System.currentTimeMillis();
+        long duration = endTime - startTime;
+
+        System.out.println("Время выполнения запроса: " + duration + " мс");
+        return  result;
     }
 
     @Operation(summary = "Create a new user")

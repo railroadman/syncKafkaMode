@@ -30,9 +30,12 @@ public class AddressInfoListener {
     public void listenAddressInfoRequests(ConsumerRecord<String, String> record, Acknowledgment acknowledgment) {
         String requestKey = record.key();
         var userId = Long.parseLong(record.value());
-
+        long startTime = System.currentTimeMillis();
         respondToAddressInfoRequest(requestKey, userService.getUserById(userId));
         acknowledgment.acknowledge();
+        long endTime = System.currentTimeMillis();
+        double elapsedTime = endTime - startTime;
+        System.out.println("Kafka + DB query: " + elapsedTime + "ms");
     }
 
     private void respondToAddressInfoRequest(String requestKey, UserResponseDto user) {
